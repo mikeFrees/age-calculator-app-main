@@ -6,6 +6,10 @@
 .attribution { font-size: 11px; text-align: center; }
 .attribution a { color: hsl(228, 45%, 44%); }
 
+*{
+    font-family: 'poppins', sans-serif;
+}
+
 body {
     background-color: hsl(0, 0%, 94%);
 }
@@ -30,13 +34,24 @@ span {
 button {
     background-color: hsl(259, 100%, 65%);
     border-radius: 50%;
+    border: unset;
+    width: 120px;
+    height: 120px;
 }
 
 form {
     color: hsl(0, 1%, 44%);
+    font-weight: 400;
+}
+
+label {
+    font-size: 0.4rem;
 }
 
 input {
-    border-color: hsl(0, 0%, 86%);
+
     border-radius: 5px;
+    border: 1px solid hsl(0, 0%, 86%);
+    font-weight: 700;
+    line-height: 2rem;
 }
