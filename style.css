@@ -12,6 +12,31 @@ body {
 
 main {
     background-color: hsl(0, 0%, 100%);
-    width: 90vw;
+    width: 92vw;
+    height: 60vh;
     border-radius: 20px 20px 100px 20px;
+}
+
+h1 {
+    color: hsl(0, 0%, 8%);
+    font-weight: 800;
+    font-style: italic;
+}
+
+span {
+    color: hsl(259, 100%, 65%);
+}
+
+button {
+    background-color: hsl(259, 100%, 65%);
+    border-radius: 50%;
+}
+
+form {
+    color: hsl(0, 1%, 44%);
+}
+
+input {
+    border-color: hsl(0, 0%, 86%);
+    border-radius: 5px;
 }
