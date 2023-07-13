@@ -12,5 +12,6 @@ body {
 
 main {
     background-color: hsl(0, 0%, 100%);
-    width: 60vw;
+    width: 90vw;
+    border-radius: 20px 20px 100px 20px;
 }
