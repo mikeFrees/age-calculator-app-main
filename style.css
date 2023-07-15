@@ -37,15 +37,28 @@ button {
     border: unset;
     width: 120px;
     height: 120px;
+    grid-row: 3;
 }
 
 form {
     color: hsl(0, 1%, 44%);
     font-weight: 400;
+    width: 85%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 10% 50% 40%;
+    gap: 5%;
+}
+
+hr {
+    border-top: 1px solid hsl(0, 1%, 44%);
+    grid-row: 3;
 }
 
 label {
     font-size: 0.4rem;
+    letter-spacing: 0.1rem;
+    grid-row: 1;
 }
 
 input {
@@ -54,4 +67,6 @@ input {
     border: 1px solid hsl(0, 0%, 86%);
     font-weight: 700;
     line-height: 2rem;
+    grid-row: 2;
+    width: 100%;
 }
