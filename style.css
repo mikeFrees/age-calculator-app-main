@@ -59,6 +59,7 @@ form {
     color: hsl(0, 1%, 44%);
     font-weight: 400;
     width: 85%;
+    margin-top: 5vh;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 10% 20% 50%;
