@@ -12,6 +12,9 @@
 
 body {
     background-color: hsl(0, 0%, 94%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 main {
@@ -19,12 +22,18 @@ main {
     width: 92vw;
     height: 60vh;
     border-radius: 20px 20px 100px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 h1 {
     color: hsl(0, 0%, 8%);
     font-weight: 800;
     font-style: italic;
+    align-self: flex-start;
+    margin-left: 5%;
 }
 
 span {
@@ -38,6 +47,9 @@ button {
     width: 120px;
     height: 120px;
     grid-row: 3;
+    z-index: 3;
+    grid-column: 2;
+    margin: auto;
 }
 
 form {
@@ -46,19 +58,25 @@ form {
     width: 85%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 10% 50% 40%;
-    gap: 5%;
+    grid-template-rows: 10% 20% 50%;
+    gap: 10px;
+    align-items: center;
 }
 
 hr {
     border-top: 1px solid hsl(0, 1%, 44%);
+    width: 100%;
     grid-row: 3;
+    grid-column: 1 / 4;
+    z-index: 2;
 }
 
 label {
     font-size: 0.4rem;
     letter-spacing: 0.1rem;
     grid-row: 1;
+    display: flex;
+    justify-content: flex-start;
 }
 
 input {
