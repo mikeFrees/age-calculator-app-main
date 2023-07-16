@@ -1,17 +1,64 @@
 function calculateAge() {
-    const birthDate = validateInput();
     const currentDate = new Date();
+    const birthDate = getBirthDate();
     const ageInMilliseconds = currentDate - birthDate;
     const age = calculateAgeComponents(ageInMilliseconds);
     displayAge(age);
   }
 
-  function validateInput() {
-    const day = document.getElementById("day").valueAsNumber;
-    const month = document.getElementById("month").valueAsNumber - 1;
-    const year = document.getElementById("year").valueAsNumber;
+  function getBirthDate() {
+    const day = document.getElementById("day");
+    const month = document.getElementById("month");
+    const year = document.getElementById("year");
 
-    return new Date(year, month, day);
+    if (!validateInputDay(day) || !validateInputMonth(month) || !validateInputYear(year, currentDate)) {
+        // error message needed
+        return;
+    }
+
+    return new Date(year.valueAsNumber, month.valueAsNumber - 1, day.valueAsNumber);
+  }
+
+  function validateInputDay(inputElement) {
+    const value = inputElement.valueAsNumber;
+    if (isNaN(value)) {
+        return false;
+    }
+    if (value < 1) {
+        return false;
+    }
+    if (value > 31) {
+        return false;
+    }
+    return true;
+  }
+
+  function validateInputMonth(inputElement) {
+    const value = inputElement.valueAsNumber;
+    if (isNaN(value)) {
+        return false;
+    }
+    if (value < 1) {
+        return false;
+    }
+    if (value > 12) {
+        return false;
+    }
+    return true;
+  }
+
+  function validateInputYear(inputElement, currentDate) {
+    const value = inputElement.valueAsNumber;
+    if (isNaN(value)) {
+        return false;
+    }
+    if (value < 0) {
+        return false;
+    }
+    if (value > currentDate.getYear()) {
+        return false;
+    }
+    return true;
   }
   
   function calculateAgeComponents(milliseconds) {
