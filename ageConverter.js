@@ -1,5 +1,7 @@
+let currentDate;
+
 function calculateAge() {
-    const currentDate = new Date();
+    currentDate = new Date();
     const birthDate = getBirthDate();
     const ageInMilliseconds = currentDate - birthDate;
     const age = calculateAgeComponents(ageInMilliseconds);
@@ -11,34 +13,54 @@ function calculateAge() {
     const month = document.getElementById("month");
     const year = document.getElementById("year");
 
-    const dayIsValid = validateInput(day, month, year);
-    const monthIsValid = validateInput(month, 12);
-    const yearIsValid = validateInput(year, currentDate.getFullYear() - 123, currentDate.getFullYear()); // 122 years 164 days oldest person registered
+    try {
+      validateInput(day, 1, 31, month, year, day.id);
+    } catch (error) {
+      console.error(error.message);
+    }
+
+    try {
+      validateInput(month, 1, 12, month, year, month.id);
+    } catch (error) {
+      console.error(error.message);
+    }
+
+    try {
+      validateInput(year, currentDate.getFullYear() - 123, currentDate.getFullYear(), month, year, year.id); // 122 years 164 days oldest person registered
+    } catch (error) {
+      console.error(error.message);
+    }
 
     return new Date(year.valueAsNumber, month.valueAsNumber - 1, day.valueAsNumber);
   }
 
-  function validateInput(value, month = 0, year = 0, minValue = 1, maxValue = 0) {
+  function validateInput(value, minValue = 1, maxValue = 0, month = 0, year = 0, fieldType = "") {
     const valueNumber = value.valueAsNumber;
-    if (value.id == 'day') {
+
+    if (fieldType == 'day') {
       maxValue = monthSelection(month, year);
     }
 
-    if (!isNaN(valueNumber)){
-      return "This field is required";
+    if (isNaN(valueNumber)){
+      throw new Error(`The ${fieldType} field is required`);
     }
-
+  
     if (valueNumber < minValue || valueNumber > maxValue) {
-      if (valueNumber > maxValue && value.id == "year") {
-        return "You are the oldest living person! apply for your application at the guines book of world records with the following link. https://www.guinnessworldrecords.com/search/applicationrecordsearch?term=%2A&contentType=record";
+      if (valueNumber < minValue && fieldType === "year") {
+        throw new Error(`You are the oldest living person! Apply for your application at the Guinness Book of World Records with the following link: [Apply for record!](https://www.guinnessworldrecords.com/search/applicationrecordsearch?term=%2A&contentType=record)`);
       }
-      return `Must be a valid ${value.id}`
+      if (fieldType === "year") {
+        throw new Error("Must be in the past");
+      }
+      throw new Error(`Must be a valid ${fieldType}`);
     }
 
-    return;
+    return null;
   }
 
   function monthSelection(month, year){
+    let maxValue;
+
     switch (month.valueAsNumber) {
       //month selection
       case 2:
@@ -79,3 +101,12 @@ function calculateAge() {
     document.getElementById("days").innerHTML = age.days.toString();
   }
   
+
+/*
+ * Error Messages:
+ * The error object contains the "error" property with the respective error message.
+ * - "The ${fieldType} field is required"
+ * - "Must be in the past"
+ * - "Must be a valid ${fieldType}"
+ * - "You are the oldest living person! Apply for your application at the Guinness Book of World Records with the following link: [Apply for record!](https://www.guinnessworldrecords.com/search/applicationrecordsearch?term=%2A&contentType=record)"
+ */

@@ -19,11 +19,11 @@
   <main>
     <form name="ageCalculator" onsubmit="event.preventDefault(); calculateAge();">
       <label name= "day" for="day">DAY</label>
-      <input type="number" name="day" min="0" max="31" placeholder="DD" id="day" required>
+      <input name="day" placeholder="DD" id="day">
       <label name= "month" for="month">MONTH</label>
-      <input type="number" name="month" min="1" max="12" placeholder="MM" id="month" required>
+      <input type="number" name="month" placeholder="MM" id="month">
       <label name= "year" for="year">YEAR</label>
-      <input type="number" name="year" min="0" placeholder="YYYY" id="year" required>
+      <input type="number" name="year" placeholder="YYYY" id="year">
       <hr/>
       <button name="convert" type="submit">
         <svg xmlns="http://www.w3.org/2000/svg" width="46" height="44" viewBox="0 0 46 44"><g fill="none" stroke="#FFF" stroke-width="4">
