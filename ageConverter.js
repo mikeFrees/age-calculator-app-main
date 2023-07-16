@@ -11,54 +11,54 @@ function calculateAge() {
     const month = document.getElementById("month");
     const year = document.getElementById("year");
 
-    if (!validateInputDay(day) || !validateInputMonth(month) || !validateInputYear(year, currentDate)) {
-        // error message needed
-        return;
-    }
+    const dayIsValid = validateInput(day, month, year);
+    const monthIsValid = validateInput(month, 12);
+    const yearIsValid = validateInput(year, currentDate.getFullYear() - 123, currentDate.getFullYear()); // 122 years 164 days oldest person registered
 
     return new Date(year.valueAsNumber, month.valueAsNumber - 1, day.valueAsNumber);
   }
 
-  function validateInputDay(inputElement) {
-    const value = inputElement.valueAsNumber;
-    if (isNaN(value)) {
-        return false;
+  function validateInput(value, month = 0, year = 0, minValue = 1, maxValue = 0) {
+    const valueNumber = value.valueAsNumber;
+    if (value.id == 'day') {
+      maxValue = monthSelection(month, year);
     }
-    if (value < 1) {
-        return false;
+
+    if (!isNaN(valueNumber)){
+      return "This field is required";
     }
-    if (value > 31) {
-        return false;
+
+    if (valueNumber < minValue || valueNumber > maxValue) {
+      if (valueNumber > maxValue && value.id == "year") {
+        return "You are the oldest living person! apply for your application at the guines book of world records with the following link. https://www.guinnessworldrecords.com/search/applicationrecordsearch?term=%2A&contentType=record";
+      }
+      return `Must be a valid ${value.id}`
     }
-    return true;
+
+    return;
   }
 
-  function validateInputMonth(inputElement) {
-    const value = inputElement.valueAsNumber;
-    if (isNaN(value)) {
-        return false;
+  function monthSelection(month, year){
+    switch (month.valueAsNumber) {
+      //month selection
+      case 2:
+        maxValue = 28;
+        break;
+      case 4:
+      case 6:
+      case 9:
+      case 11:
+        maxValue = 30;
+        break;
+      default:
+        maxValue = 31;
+        break;
     }
-    if (value < 1) {
-        return false;
+    //leap year calculation
+    if ((0 == year.valueAsNumber % 4) && (0 != year.valueAsNumber % 100) || (0 == year.valueAsNumber % 400)) {
+      maxValue = 29;
     }
-    if (value > 12) {
-        return false;
-    }
-    return true;
-  }
-
-  function validateInputYear(inputElement, currentDate) {
-    const value = inputElement.valueAsNumber;
-    if (isNaN(value)) {
-        return false;
-    }
-    if (value < 0) {
-        return false;
-    }
-    if (value > currentDate.getYear()) {
-        return false;
-    }
-    return true;
+    return maxValue;
   }
   
   function calculateAgeComponents(milliseconds) {

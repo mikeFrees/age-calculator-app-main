@@ -17,7 +17,7 @@
 </head>
 <body>
   <main>
-    <form name="ageCalculator">
+    <form name="ageCalculator" onsubmit="event.preventDefault(); calculateAge();">
       <label name= "day" for="day">DAY</label>
       <input type="number" name="day" min="0" max="31" placeholder="DD" id="day" required>
       <label name= "month" for="month">MONTH</label>
@@ -25,7 +25,7 @@
       <label name= "year" for="year">YEAR</label>
       <input type="number" name="year" min="0" placeholder="YYYY" id="year" required>
       <hr/>
-      <button name="convert" onclick="calculateAge(); return false">
+      <button name="convert" type="submit">
         <svg xmlns="http://www.w3.org/2000/svg" width="46" height="44" viewBox="0 0 46 44"><g fill="none" stroke="#FFF" stroke-width="4">
         <path d="M1 22.019C8.333 21.686 23 25.616 23 44M23 44V0M45 22.019C37.667 21.686 23 25.616 23 44"/></g></svg>
       </button>
