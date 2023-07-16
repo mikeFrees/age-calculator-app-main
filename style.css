@@ -33,6 +33,7 @@ main {
 h1 {
     color: hsl(0, 0%, 8%);
     font-weight: 800;
+    font-size: 1.5rem;
     font-style: italic;
     align-self: flex-start;
     margin-left: 6vw;
@@ -46,8 +47,8 @@ button {
     background-color: hsl(259, 100%, 65%);
     border-radius: 50%;
     border: unset;
-    width: 120px;
-    height: 120px;
+    width: 2rem;
+    height: 2rem;
     grid-row: 3;
     z-index: 3;
     grid-column: 2;
@@ -55,10 +56,16 @@ button {
     margin-top: 10%;
 }
 
+svg {
+    width: 0.8rem;
+    height: 0.8rem;
+}
+
 form {
     color: hsl(0, 1%, 44%);
     font-weight: 400;
     width: 85%;
+    height: 40% ;
     margin-top: 5vh;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -86,12 +93,13 @@ label {
 
 input {
 
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid hsl(0, 0%, 86%);
     font-weight: 700;
-    line-height: 2rem;
+    font-size: 0.5rem;
+    line-height: 1.5rem;
     grid-row: 2;
     width: 100%;
-    padding-left: 10%;
+    padding-left: 15%;
     text-align:left;
 }
