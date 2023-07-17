@@ -18,15 +18,18 @@
 <body>
   <main>
     <form name="ageCalculator" onsubmit="event.preventDefault(); calculateAge();">
-      <label name= "day" for="day">DAY</label>
-      <input name="day" placeholder="DD" id="day">
-      <label name= "month" for="month">MONTH</label>
+      <label for="day">DAY</label>
+      <input type="number" name="day" placeholder="DD" id="day">
+      <div style="display: none;" class="error day"></div>
+      <label for="month">MONTH</label>
       <input type="number" name="month" placeholder="MM" id="month">
-      <label name= "year" for="year">YEAR</label>
+      <div style="display: none;" class="error month"></div>
+      <label for="year">YEAR</label>
       <input type="number" name="year" placeholder="YYYY" id="year">
+      <div style="display: none;" class="error year"></div>
       <hr/>
       <button name="convert" type="submit">
-        <svg xmlns="http://www.w3.org/2000/svg" width="46" height="44" viewBox="0 0 46 44"><g fill="none" stroke="#FFF" stroke-width="4">
+        <svg alt ="downwards pointing arrow to submit" xmlns="http://www.w3.org/2000/svg" width="46" height="44" viewBox="0 0 46 44"><g fill="none" stroke="#FFF" stroke-width="4">
         <path d="M1 22.019C8.333 21.686 23 25.616 23 44M23 44V0M45 22.019C37.667 21.686 23 25.616 23 44"/></g></svg>
       </button>
     </form>

@@ -3,6 +3,7 @@ let currentDate;
 function calculateAge() {
     currentDate = new Date();
     const birthDate = getBirthDate();
+    if(!birthDate){return;}
     const ageInMilliseconds = currentDate - birthDate;
     const age = calculateAgeComponents(ageInMilliseconds);
     displayAge(age);
@@ -12,32 +13,59 @@ function calculateAge() {
     const day = document.getElementById("day");
     const month = document.getElementById("month");
     const year = document.getElementById("year");
+    let errorPresent = false;
 
     try {
       validateInput(day, 1, 31, month, year, day.id);
+      clearErrorMessage(day.id)
     } catch (error) {
-      console.error(error.message);
+      errorPresent = true;
+      displayError(day.id, error.message);
     }
 
     try {
       validateInput(month, 1, 12, month, year, month.id);
+      clearErrorMessage(month.id)
     } catch (error) {
-      console.error(error.message);
+      errorPresent = true;
+      displayError(month.id, error.message);
     }
 
     try {
-      validateInput(year, currentDate.getFullYear() - 123, currentDate.getFullYear(), month, year, year.id); // 122 years 164 days oldest person registered
+      validateInput(year, currentDate.getFullYear() - 122, currentDate.getFullYear(), month, year, year.id); // 122 years 164 days oldest person registered
+      clearErrorMessage(year.id)
     } catch (error) {
-      console.error(error.message);
+      if (errorMessage === "Oldest"){
+        displayError(year.id, `You are the oldest living person! Apply for your application at the Guinness Book of World Records with the following link: <a href="https://www.guinnessworldrecords.com/search/applicationrecordsearch?term=%2A&contentType=record" target="_blank">Apply for record!</a>`);
+      } else {
+      errorPresent = true;
+      displayError(year.id, error.message);
+      }
+    }
+
+    if(errorPresent) {
+      return null;
     }
 
     return new Date(year.valueAsNumber, month.valueAsNumber - 1, day.valueAsNumber);
   }
 
-  function validateInput(value, minValue = 1, maxValue = 0, month = 0, year = 0, fieldType = "") {
+  function displayError(fieldId, errorMessage) {
+    const errorElement = document.querySelector(`.error.${fieldId}`);
+    errorElement.textContent = errorMessage;
+    errorElement.style.display = "block";
+  }
+
+  function clearErrorMessage(fieldId) {
+    const errorElement = document.querySelector(`.error.${fieldId}`);
+    errorElement.textContent = "";
+    errorElement.style.display = "none";
+  }
+
+  function validateInput(value, minValue, maxValue, month, year, fieldType) {
     const valueNumber = value.valueAsNumber;
 
-    if (fieldType == 'day') {
+    if (fieldType === 'day') {
       maxValue = monthSelection(month, year);
     }
 
@@ -47,7 +75,7 @@ function calculateAge() {
   
     if (valueNumber < minValue || valueNumber > maxValue) {
       if (valueNumber < minValue && fieldType === "year") {
-        throw new Error(`You are the oldest living person! Apply for your application at the Guinness Book of World Records with the following link: [Apply for record!](https://www.guinnessworldrecords.com/search/applicationrecordsearch?term=%2A&contentType=record)`);
+        throw new Error("Oldest");
       }
       if (fieldType === "year") {
         throw new Error("Must be in the past");
@@ -64,7 +92,7 @@ function calculateAge() {
     switch (month.valueAsNumber) {
       //month selection
       case 2:
-        maxValue = 28;
+        maxValue = isLeapYear ? 29 : 28;
         break;
       case 4:
       case 6:
@@ -76,11 +104,15 @@ function calculateAge() {
         maxValue = 31;
         break;
     }
-    //leap year calculation
-    if ((0 == year.valueAsNumber % 4) && (0 != year.valueAsNumber % 100) || (0 == year.valueAsNumber % 400)) {
-      maxValue = 29;
-    }
+
     return maxValue;
+  }
+
+  function isLeapYear() {
+    if ((0 == year.valueAsNumber % 4) && (0 != year.valueAsNumber % 100) || (0 == year.valueAsNumber % 400)) {
+      return true;
+    }
+    return false;
   }
   
   function calculateAgeComponents(milliseconds) {
