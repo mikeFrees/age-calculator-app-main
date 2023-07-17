@@ -1,12 +1,19 @@
 let currentDate;
 
 function calculateAge() {
+    resetResult();
     currentDate = new Date();
     const birthDate = getBirthDate();
     if(!birthDate){return;}
     const ageInMilliseconds = currentDate - birthDate;
     const age = calculateAgeComponents(ageInMilliseconds);
     displayAge(age);
+  }
+
+  function resetResult() {
+    document.getElementById("years").textContent = "--";
+    document.getElementById("months").textContent = "--";
+    document.getElementById("days").textContent = "--";
   }
 
   function getBirthDate() {
@@ -35,8 +42,10 @@ function calculateAge() {
       validateInput(year, currentDate.getFullYear() - 122, currentDate.getFullYear(), month, year, year.id); // 122 years 164 days oldest person registered
       clearErrorMessage(year.id)
     } catch (error) {
-      if (errorMessage === "Oldest"){
+      if (error.message === "Oldest" && !errorPresent){ 
         displayError(year.id, `You are the oldest living person! Apply for your application at the Guinness Book of World Records with the following link: <a href="https://www.guinnessworldrecords.com/search/applicationrecordsearch?term=%2A&contentType=record" target="_blank">Apply for record!</a>`);
+      } else if(error.message === "Oldest") { 
+        return;
       } else {
       errorPresent = true;
       displayError(year.id, error.message);
@@ -50,23 +59,11 @@ function calculateAge() {
     return new Date(year.valueAsNumber, month.valueAsNumber - 1, day.valueAsNumber);
   }
 
-  function displayError(fieldId, errorMessage) {
-    const errorElement = document.querySelector(`.error.${fieldId}`);
-    errorElement.textContent = errorMessage;
-    errorElement.style.display = "block";
-  }
-
-  function clearErrorMessage(fieldId) {
-    const errorElement = document.querySelector(`.error.${fieldId}`);
-    errorElement.textContent = "";
-    errorElement.style.display = "none";
-  }
-
   function validateInput(value, minValue, maxValue, month, year, fieldType) {
     const valueNumber = value.valueAsNumber;
 
     if (fieldType === 'day') {
-      maxValue = monthSelection(month, year);
+      maxValue = monthSelection(month);
     }
 
     if (isNaN(valueNumber)){
@@ -76,8 +73,7 @@ function calculateAge() {
     if (valueNumber < minValue || valueNumber > maxValue) {
       if (valueNumber < minValue && fieldType === "year") {
         throw new Error("Oldest");
-      }
-      if (fieldType === "year") {
+      } else if(fieldType === "year") {
         throw new Error("Must be in the past");
       }
       throw new Error(`Must be a valid ${fieldType}`);
@@ -86,7 +82,7 @@ function calculateAge() {
     return null;
   }
 
-  function monthSelection(month, year){
+  function monthSelection(month){
     let maxValue;
 
     switch (month.valueAsNumber) {
@@ -109,12 +105,24 @@ function calculateAge() {
   }
 
   function isLeapYear() {
-    if ((0 == year.valueAsNumber % 4) && (0 != year.valueAsNumber % 100) || (0 == year.valueAsNumber % 400)) {
+    if ((0 === year.valueAsNumber % 4) && (0 !== year.valueAsNumber % 100) || (0 === year.valueAsNumber % 400)) {
       return true;
     }
     return false;
   }
   
+  function clearErrorMessage(fieldId) {
+    const errorElement = document.querySelector(`.error.${fieldId}`);
+    errorElement.textContent = "";
+    errorElement.style.display = "none";
+  }
+
+  function displayError(fieldId, errorMessage) {
+    const errorElement = document.querySelector(`.error.${fieldId}`);
+    errorElement.textContent = errorMessage;
+    errorElement.style.display = "block";
+  }
+
   function calculateAgeComponents(milliseconds) {
     const msInYear = 31556952000;
     const msInMonth = 2629746000;
@@ -132,13 +140,3 @@ function calculateAge() {
     document.getElementById("months").innerHTML = age.months.toString();
     document.getElementById("days").innerHTML = age.days.toString();
   }
-  
-
-/*
- * Error Messages:
- * The error object contains the "error" property with the respective error message.
- * - "The ${fieldType} field is required"
- * - "Must be in the past"
- * - "Must be a valid ${fieldType}"
- * - "You are the oldest living person! Apply for your application at the Guinness Book of World Records with the following link: [Apply for record!](https://www.guinnessworldrecords.com/search/applicationrecordsearch?term=%2A&contentType=record)"
- */
