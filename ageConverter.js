@@ -71,9 +71,9 @@ function calculateAge() {
     }
   
     if (valueNumber < minValue || valueNumber > maxValue) {
-      if (valueNumber < minValue && fieldType === "year") {
+      if (valueNumber < minValue && fieldType === "year" && valueNumber > 0) {
         throw new Error("Oldest");
-      } else if(fieldType === "year") {
+      } else if(fieldType === "year" && valueNumber > 0) {
         throw new Error("Must be in the past");
       }
       throw new Error(`Must be a valid ${fieldType}`);
@@ -112,15 +112,23 @@ function calculateAge() {
   }
   
   function clearErrorMessage(fieldId) {
+    const errorInput = document.getElementById(fieldId);
     const errorElement = document.querySelector(`.error.${fieldId}`);
     errorElement.textContent = "";
-    errorElement.style.display = "none";
+    errorElement.style.color = "transparent";
+    errorInput.style.border = "1px solid hsl(0, 0%, 86%)";
   }
 
   function displayError(fieldId, errorMessage) {
+    const errorInput = document.getElementById(fieldId);
     const errorElement = document.querySelector(`.error.${fieldId}`);
     errorElement.textContent = errorMessage;
-    errorElement.style.display = "block";
+    errorElement.style.color = "hsl(0, 100%, 67%)";   
+    errorInput.style.border = "1px solid hsl(0, 100%, 67%)";
+    errorInput.classList.add("errorAnimation");
+    setTimeout(function(){
+      errorInput.classList.remove("errorAnimation");
+  }, 500);
   }
 
   function calculateAgeComponents(milliseconds) {
@@ -140,3 +148,6 @@ function calculateAge() {
     document.getElementById("months").innerHTML = age.months.toString();
     document.getElementById("days").innerHTML = age.days.toString();
   }
+
+
+  // screen in landscape layout distortion and keyboard apparition layout distortion
