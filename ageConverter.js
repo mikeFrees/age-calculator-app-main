@@ -1,11 +1,19 @@
-let currentDate, birthDate;
+let currentDate, birthDate, ageInMilliseconds;
 
 function calculateAge() {
     resetResult();
     currentDate = new Date();
     birthDate = getBirthDate();
     if(!birthDate){return;}
-    const ageInMilliseconds = currentDate - birthDate;
+    try {
+       ageInMilliseconds = currentDate - birthDate;
+       if(ageInMilliseconds <= 0) {
+        throw new Error("Must be in the past");
+       }
+    } catch (error) {
+      errorPresent = true;
+      displayError(year.id, error.message);
+    }  
     const age = calculateAgeComponents(ageInMilliseconds);
     displayAge(age);
   }
@@ -39,12 +47,13 @@ function calculateAge() {
     }
 
     try {
-      validateInput(year, currentDate.getFullYear() - 122, currentDate.getFullYear(), month, year, year.id); // 122 years 164 days oldest person registered
+      validateInput(year, currentDate.getFullYear() - 123, currentDate.getFullYear(), month, year, year.id); // 122 years 164 days oldest person registered
       clearErrorMessage(year.id)
     } catch (error) {
       if (error.message === "Oldest" && !errorPresent){ 
-        displayError(year.id, `You are the oldest living person! Apply for your application at the Guinness Book of World Records with the following link: <a href="https://www.guinnessworldrecords.com/search/applicationrecordsearch?term=%2A&contentType=record" target="_blank">Apply for record!</a>`);
+        displayError(year.id, `oldest`);
       } else if(error.message === "Oldest") { 
+        clearErrorMessage(year.id)
         return;
       } else {
       errorPresent = true;
@@ -92,7 +101,7 @@ function calculateAge() {
     switch (month.valueAsNumber) {
       //month selection
       case 2:
-        maxValue = isLeapYear ? 29 : 28;
+        maxValue = isLeapYear() ? 29 : 28;
         break;
       case 4:
       case 6:
@@ -118,14 +127,21 @@ function calculateAge() {
   function clearErrorMessage(fieldId) {
     const errorInput = document.getElementById(fieldId);
     const errorElement = document.querySelector(`.error.${fieldId}`);
+    const oldestElement = document.querySelectorAll(`.oldest`);
     errorElement.textContent = "";
     errorElement.style.color = "transparent";
     errorInput.style.border = "1px solid hsl(0, 0%, 86%)";
+    oldestElement.forEach(Element => Element.style.display = "none");
   }
 
   function displayError(fieldId, errorMessage) {
     const errorInput = document.getElementById(fieldId);
     const errorElement = document.querySelector(`.error.${fieldId}`);
+    if(errorMessage === "oldest") {
+      const oldestElement = document.querySelectorAll(`.oldest`);
+      oldestElement.forEach(Element => Element.style.display = "block");
+      return;
+    }
     errorElement.textContent = errorMessage;
     errorElement.style.color = "hsl(0, 100%, 67%)";   
     errorInput.style.border = "1px solid hsl(0, 100%, 67%)";
@@ -158,7 +174,3 @@ function calculateAge() {
     document.getElementById("months").innerHTML = age.months.toString();
     document.getElementById("days").innerHTML = age.days.toString();
   }
-
-
-  // screen in landscape layout distortion and keyboard apparition layout distortion
-  //check date in future
