@@ -1,9 +1,9 @@
-let currentDate;
+let currentDate, birthDate;
 
 function calculateAge() {
     resetResult();
     currentDate = new Date();
-    const birthDate = getBirthDate();
+    birthDate = getBirthDate();
     if(!birthDate){return;}
     const ageInMilliseconds = currentDate - birthDate;
     const age = calculateAgeComponents(ageInMilliseconds);
@@ -56,7 +56,11 @@ function calculateAge() {
       return null;
     }
 
-    return new Date(year.valueAsNumber, month.valueAsNumber - 1, day.valueAsNumber);
+    let birthDate = new Date();
+    birthDate.setFullYear(year.valueAsNumber);
+    birthDate.setMonth(month.valueAsNumber - 1);
+    birthDate.setDate(day.valueAsNumber);
+    return birthDate;
   }
 
   function validateInput(value, minValue, maxValue, month, year, fieldType) {
@@ -135,9 +139,15 @@ function calculateAge() {
     const msInYear = 31556952000;
     const msInMonth = 2629746000;
     const msInDay = 86400000;
-  
-    const years = Math.floor(milliseconds / msInYear);
-    const months = Math.floor((milliseconds % msInYear) / msInMonth);
+    let years, months;
+
+    if(birthDate.getDate() === 29 && birthDate.getMonth() === 1 && isLeapYear(birthDate.getFullYear())) {
+      years = Math.floor((milliseconds / msInYear) / 4);
+      months = Math.floor((milliseconds % (msInYear * 4)) / msInMonth);
+    } else {    
+      years = Math.floor(milliseconds / msInYear);
+      months = Math.floor((milliseconds % msInYear) / msInMonth);
+    }  
     const days = Math.ceil(((milliseconds % msInYear) % msInMonth) / msInDay);
   
     return { years, months, days };
@@ -151,3 +161,4 @@ function calculateAge() {
 
 
   // screen in landscape layout distortion and keyboard apparition layout distortion
+  //check date in future
